@@ -16,7 +16,7 @@ on:
 env:
   MYSQL_URL: ${{ secrets.MYSQL_DEV_URL }}
   MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-  MYSQL_PASSWORD: "duddnentks223"\!"
+  MYSQL_PASSWORD: "duddnentks223"
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_DEV_IMAGE_NAME }}--build-arg \
             MYSQL_URL=${{ secrets.MYSQL_DEV_URL }} \
             MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} \
-            MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
+            MYSQL_PASSWORD="${{ env.MYSQL_PASSWORD }}"\! \
             .
           docker tag ${{ secrets.DOCKER_DEV_IMAGE_NAME }} ${{secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
@@ -56,4 +56,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
             docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
             docker stop server
+            export
             docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
