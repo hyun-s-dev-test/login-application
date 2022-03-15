@@ -47,7 +47,8 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
             docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
             docker stop server
-            docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKER_DEV_IMAGE_NAME }} \
+            docker run -d --rm --name server -p 80:8080 \
             -e MYSQL_URL=${{ secrets.MYSQL_DEV_URL }} \
             -e MySQL_USERNAME=${{ secrets.MYSQL_USERNAME }} \
-            -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+            -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
+            ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
