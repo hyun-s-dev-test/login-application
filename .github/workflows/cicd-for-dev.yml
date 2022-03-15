@@ -16,7 +16,7 @@ on:
 env:
   MYSQL_URL: ${{ secrets.MYSQL_DEV_URL }}
   MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-  MYSQL_PASSWORD: 'duddnentks223!'
+  MYSQL_PASSWORD: "duddnentks223"\!"
 
 jobs:
   build:
