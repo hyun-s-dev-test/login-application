@@ -13,11 +13,6 @@ on:
   pull_request:
     branches: [ dev ]
 
-env:
-  MYSQL_URL: ${{ secrets.MYSQL_DEV_URL }}
-  MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-  MYSQL_PASSWORD: "duddnentks223"
-
 jobs:
   build:
 
@@ -34,13 +29,18 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          MYSQL_URL: ${{ secrets.MYSQL_DEV_URL }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_DEV_IMAGE_NAME }}--build-arg \
-            MYSQL_URL=${{ secrets.MYSQL_DEV_URL }} \
-            MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} \
-            MYSQL_PASSWORD="${{ secrets.MYSQL_PASSWORD }}"\! \
+          docker build -t ${{ secrets.DOCKER_DEV_IMAGE_NAME }} --build-arg \
+            --build-arg MYSQL_URL=${{ secrets.MYSQL_DEV_URL }} \
+            --build-arg MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} \
+            --build-arg MYSQL_PASSWORD="${{ secrets.MYSQL_PASSWORD }} \
             .
           docker tag ${{ secrets.DOCKER_DEV_IMAGE_NAME }} ${{secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
@@ -56,5 +56,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
             docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
             docker stop server
-            export
             docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
