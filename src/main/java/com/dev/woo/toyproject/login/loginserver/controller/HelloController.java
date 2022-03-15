@@ -21,6 +21,6 @@ public class HelloController {
     @GetMapping("/")
     public String hello() {
         return "Dev Branch CI&CD Test\n" +
-                "Hello world!";
+                "Hello world! MYSQL 연결까지 끝났다.!";
     }
 }
