@@ -27,26 +27,12 @@ jobs:
           distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: Setup MySQL
-        uses: samin/mysql-action@v1
-        with:
-          mysql version: '5.7'
-          mysql database: login
-          mysql user: ${{ secrets.MYSQL_USERNAME }}
-          mysql password: ${{ secrets.MYSQL_PASSWORD }}
-
       - name: Build with Gradle
         run: ./gradlew build
-
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_DEV_IMAGE_NAME }} --build-arg \
-            --build-arg MYSQL_URL=${{ secrets.MYSQL_DEV_URL }} \
-            --build-arg MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} \
-            --build-arg MYSQL_PASSWORD="${{ secrets.MYSQL_PASSWORD }} \
-            .
+          docker build -t ${{ secrets.DOCKER_DEV_IMAGE_NAME }} .
           docker tag ${{ secrets.DOCKER_DEV_IMAGE_NAME }} ${{secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
 
@@ -61,4 +47,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
             docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7} ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
             docker stop server
-            docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKER_DEV_IMAGE_NAME }}
+            docker run -d --rm --name server -p 80:8080 ${{ secrets.DOCKER_DEV_IMAGE_NAME }} -e MYSQL_URL=${{secrets.MYSQL_DEV_URL}}

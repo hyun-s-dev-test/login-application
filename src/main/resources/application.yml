@@ -1,0 +1,21 @@
+#Swagger 설정
+
+#mysql
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.datasource.url=${MYSQL_URL}
+#spring.datasource.username=${MYSQL_USERNAME}
+#spring.datasource.password=${MYSQL_PASSWORD}
+
+#spring.profiles.include=oauth
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show_sql: true
