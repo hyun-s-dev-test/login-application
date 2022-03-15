@@ -25,12 +25,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Set Environment variable
-        run: |
-          export MYSQL_URL=${{ secrets.MYSQL_DEV_URL }}
-          export MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
-          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          echo $MYSQL_PASSWORD
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
@@ -45,6 +39,10 @@ jobs:
             .
           docker tag ${{ secrets.DOCKER_DEV_IMAGE_NAME }} ${{secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_DEV_IMAGE_NAME }}:${GITHUB_SHA::7}
+        env:
+          MYSQL_URL:${{ secrets.MYSQL_DEV_URL }}
+          MYSQL_USERNAME:${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD:${{ secrets.MYSQL_PASSWORD }}
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
