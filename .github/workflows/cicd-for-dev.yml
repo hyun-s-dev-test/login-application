@@ -27,12 +27,17 @@ jobs:
           distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Setup MySQL
+        uses: samin/mysql-action@v1
+        with:
+          mysql version: '8.0'
+          mysql database: ${{ secrets.MYSQL_DEV_URL }}
+          mysql user: ${{ secrets.MYSQL_USERNAME }}
+          mysql password: ${{ secrets.MYSQL_PASSWORD }}
+
       - name: Build with Gradle
         run: ./gradlew build
-        env:
-          MYSQL_URL: ${{ secrets.MYSQL_DEV_URL }}
-          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
       - name: Docker build
         run: |
