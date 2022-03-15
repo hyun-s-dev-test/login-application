@@ -8,7 +8,7 @@ public class HelloController {
 
     @GetMapping("/")
     public String hello() {
-        return "Main Branch CI&CD Test\n" +
+        return "Dev Branch CI&CD Test\n" +
                 "Hello world!";
     }
 }
