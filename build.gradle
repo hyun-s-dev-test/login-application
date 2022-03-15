@@ -4,12 +4,8 @@ plugins {
 	id 'java'
 }
 
-group = 'com.dev.woo.toyproject.login'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
 jar {
-	enable = false
+	enabled = false
 }
 
 bootJar {
@@ -17,6 +13,10 @@ bootJar {
 	archiveFileName = 'login-application.jar'
 	archiveVersion = '0.0.0'
 }
+
+group = 'com.dev.woo.toyproject.login'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
