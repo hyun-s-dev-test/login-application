@@ -31,8 +31,8 @@ jobs:
       - name: Setup MySQL
         uses: samin/mysql-action@v1
         with:
-          mysql version: '8.0'
-          mysql database: ${{ secrets.MYSQL_DEV_URL }}
+          mysql version: '5.7'
+          mysql database: login
           mysql user: ${{ secrets.MYSQL_USERNAME }}
           mysql password: ${{ secrets.MYSQL_PASSWORD }}
 
