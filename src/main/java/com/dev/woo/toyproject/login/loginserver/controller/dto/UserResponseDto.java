@@ -25,6 +25,10 @@ public class UserResponseDto {
     private final String socialType;
     @ApiModelProperty(value = "createdAt", notes = "회원가입시간", example = "YYYY-MM-DD-HH-mm-ss", required = false)
     private final LocalDateTime createdAt;
+    @ApiModelProperty(value = "updatedAt", notes = "회원정보수정시간", example = "YYYY-MM-DD-HH-mm-ss", required = false)
+    private final LocalDateTime updatedAt;
+    @ApiModelProperty(value = "phone", notes = "휴대폰번호", example = "YYYY-MM-DD-HH-mm-ss", required = false)
+    private final String phone;
 
     public UserResponseDto(User user) {
         this.pk = user.getPk();
@@ -34,5 +38,7 @@ public class UserResponseDto {
         this.birth = user.getBirth();
         this.socialType = user.getSocialType();
         this.createdAt = user.getCreatedAt();
+        this.updatedAt = user.getUpdatedAt();
+        this.phone = user.getPhone();
     }
 }

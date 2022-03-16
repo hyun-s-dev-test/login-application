@@ -37,7 +37,7 @@ public class UserUpdateRequestDto {
 
     @Builder
     public UserUpdateRequestDto(String id, String name, String password, String gender, String socialType, String token, String phone, LocalDate birth) {
-        this.id =id;
+        this.id = id;
         this.name = name;
         this.password = password;
         this.gender = gender;
