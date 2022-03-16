@@ -27,7 +27,7 @@ public class UserResponseDto {
     private final LocalDateTime createdAt;
     @ApiModelProperty(value = "updatedAt", notes = "회원정보수정시간", example = "YYYY-MM-DD-HH-mm-ss", required = false)
     private final LocalDateTime updatedAt;
-    @ApiModelProperty(value = "phone", notes = "휴대폰번호", example = "YYYY-MM-DD-HH-mm-ss", required = false)
+    @ApiModelProperty(value = "phone", notes = "휴대폰번호", example = "01012345678", required = false)
     private final String phone;
 
     public UserResponseDto(User user) {
