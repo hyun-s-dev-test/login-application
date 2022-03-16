@@ -11,6 +11,9 @@ import java.time.LocalDate;
 @ApiModel(value = "UserUpdateRequestDto", description = "유저 업데이트 정보")
 public class UserUpdateRequestDto {
 
+    @ApiModelProperty(notes = "아이디", value = "id", example ="0woodev")
+    private String id;
+
     @ApiModelProperty(notes = "이름", value = "name", example ="남영우")
     private String name;
 
@@ -33,7 +36,8 @@ public class UserUpdateRequestDto {
     private LocalDate birth;
 
     @Builder
-    public UserUpdateRequestDto(String name, String password, String gender, String socialType, String token, String phone, LocalDate birth) {
+    public UserUpdateRequestDto(String id, String name, String password, String gender, String socialType, String token, String phone, LocalDate birth) {
+        this.id =id;
         this.name = name;
         this.password = password;
         this.gender = gender;

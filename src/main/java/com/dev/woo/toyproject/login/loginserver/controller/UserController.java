@@ -64,7 +64,9 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
     })
     @GetMapping("")
-    public ResponseEntity<UserResponseDto> getUserInfoByIdInCookie(@Parameter(name="Id", in=ParameterIn.COOKIE) String id) {
+    public ResponseEntity<UserResponseDto> getUserInfoByIdInCookie(
+            @Parameter(name="Id", in=ParameterIn.COOKIE) String id
+    ) {
         UserResponseDto userResponseDto = null;
 
         try {
@@ -100,7 +102,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
     })
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto requestDto, HttpServletResponse response) {
+    public ResponseEntity<UserLoginResponseDto> login(
+            @RequestBody UserLoginRequestDto requestDto,
+            HttpServletResponse response
+    ) {
         UserLoginResponseDto userInfo;
 
         try {
@@ -126,9 +131,13 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
     })
     @PutMapping("")
-    public ResponseEntity<UserResponseDto> updateUserInfo(@Parameter(name = "Id", in = ParameterIn.COOKIE) String id, @RequestBody UserUpdateRequestDto updateRequestDto) {
+    public ResponseEntity<UserResponseDto> updateUserInfo(
+//            @Parameter(name = "Id", in = ParameterIn.COOKIE) String id,
+            @RequestBody UserUpdateRequestDto updateRequestDto
+    ) {
         UserResponseDto userResponseDto;
 
+        String id = updateRequestDto.getId();
         try {
             userResponseDto = userService.update(id, updateRequestDto);
         } catch(IllegalArgumentException e) {
