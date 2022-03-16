@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
 @ApiModel(value = "UserSaveRequestDto", description = "유저 회원가입 정보")
 public class UserSaveRequestDto {
@@ -32,8 +34,11 @@ public class UserSaveRequestDto {
     @ApiModelProperty(notes = "휴대폰번호", value = "phone", example = "01012345678")
     private String phone;
 
+    @ApiModelProperty(notes = "생년월일", value = "birth", example = "1997-07-28")
+    private LocalDate birth;
+
     @Builder
-    public UserSaveRequestDto(String name, String id, String password, String gender, String socialType, String token, String phone) {
+    public UserSaveRequestDto(String name, String id, String password, String gender, String socialType, String token, String phone, LocalDate birth) {
         this.name = name;
         this.id = id;
         this.password = password;
@@ -41,6 +46,7 @@ public class UserSaveRequestDto {
         this.socialType = socialType;
         this.token = token;
         this.phone = phone;
+        this.birth = birth;
     }
 
     public User toEntity() {
@@ -53,6 +59,7 @@ public class UserSaveRequestDto {
                 .token(token)
                 .role(Role.USER)
                 .phone(phone)
+                .birth(birth)
                 .build();
     }
 }
