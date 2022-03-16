@@ -25,10 +25,22 @@ public class Term extends BaseTimeEntity {
     @Column(nullable = false)
     private String writer;
 
+    @Column(nullable = false)
+    private Long active;
+
+    @Column
+    private Long orderNum;
+
     @Builder
-    public Term(String title, String content, String writer) {
+    public Term(String title, String content, String writer, Long active, Long orderNum) {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.active = active;
+        this.orderNum = orderNum;
+    }
+
+    public boolean isActive() {
+        return active == 1;
     }
 }
