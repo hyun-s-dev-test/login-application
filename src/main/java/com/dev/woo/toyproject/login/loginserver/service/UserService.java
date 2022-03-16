@@ -12,4 +12,6 @@ public interface UserService {
     UserLoginResponseDto login(UserLoginRequestDto requestDto);
 
     UserResponseDto update(String id, UserUpdateRequestDto updateRequestDto);
+
+    UserResponseDto findById(String id);
 }

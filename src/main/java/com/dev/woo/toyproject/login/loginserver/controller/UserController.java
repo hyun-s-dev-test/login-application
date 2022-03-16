@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +35,49 @@ public class UserController {
     public ResponseEntity<List<UserResponseDto>> getAllUserInfo() {
         return ResponseEntity.ok(userService.findAllUser());
     }
+
+    @ApiOperation(value = "유저의 아이디를 통한 유저정보 조회", notes = "아이디에 해당하는 유저 정보를 가져옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK!"),
+            @ApiResponse(code = 400, message = "BAD REQUEST!"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
+    })
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<UserResponseDto> getUserInfoById(@PathVariable String id) {
+        UserResponseDto userResponseDto = null;
+
+        try {
+            userResponseDto = userService.findById(id);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+    @ApiOperation(value = "로그인한 본인의 유저정보 조회", notes = "본인의 유저 정보를 가져옵니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK!"),
+            @ApiResponse(code = 400, message = "BAD REQUEST!"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
+    })
+    @GetMapping("")
+    public ResponseEntity<UserResponseDto> getUserInfoByIdInCookie(@Parameter(name="Id", in=ParameterIn.COOKIE) String id) {
+        UserResponseDto userResponseDto = null;
+
+        try {
+            userResponseDto = userService.findById(id);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(userResponseDto);
+    }
+
 
     @Operation(summary = "유저 추가", description = "입력한 데이터로 새로운 유저를 생성합니다.")
     @ApiResponses({
@@ -83,10 +125,8 @@ public class UserController {
             @ApiResponse(code = 400, message = "BAD REQUEST!"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
     })
-    @PutMapping()
-    public ResponseEntity<UserResponseDto> update(
-            @RequestBody UserUpdateRequestDto updateRequestDto,
-            @Parameter(name = "Id", in = ParameterIn.COOKIE) String id) {
+    @PutMapping("")
+    public ResponseEntity<UserResponseDto> updateUserInfo(@Parameter(name = "Id", in = ParameterIn.COOKIE) String id, @RequestBody UserUpdateRequestDto updateRequestDto) {
         UserResponseDto userResponseDto;
 
         try {

@@ -1,7 +1,5 @@
 package com.dev.woo.toyproject.login.loginserver.controller.dto;
 
-import com.dev.woo.toyproject.login.loginserver.domain.user.Role;
-import com.dev.woo.toyproject.login.loginserver.domain.user.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -10,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-@ApiModel(value = "UserUpdateRequestDto", description = "유저 회원가입 정보")
+@ApiModel(value = "UserUpdateRequestDto", description = "유저 업데이트 정보")
 public class UserUpdateRequestDto {
 
     @ApiModelProperty(notes = "이름", value = "name", example ="남영우")

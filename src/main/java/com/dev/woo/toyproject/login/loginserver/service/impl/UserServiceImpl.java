@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
 
         return new UserResponseDto(user);
     }
+
+    @Override
+    public UserResponseDto findById(String id) {
+        return new UserResponseDto(userRepository.findById(id));
+    }
 }
