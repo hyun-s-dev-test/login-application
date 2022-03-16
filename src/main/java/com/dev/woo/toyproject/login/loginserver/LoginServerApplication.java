@@ -15,7 +15,7 @@ public class LoginServerApplication {
 
 	@PostConstruct
 	public void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC+9"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 	}
 
 	public static void main(String[] args) {
