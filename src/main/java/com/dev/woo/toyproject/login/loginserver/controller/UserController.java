@@ -1,15 +1,14 @@
 package com.dev.woo.toyproject.login.loginserver.controller;
 
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginRequestDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginResponseDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserResponseDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserSaveRequestDto;
+import com.dev.woo.toyproject.login.loginserver.controller.dto.*;
 import com.dev.woo.toyproject.login.loginserver.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
 import org.springframework.http.ResponseEntity;
@@ -76,5 +75,28 @@ public class UserController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(userInfo);
+    }
+
+    @Operation(summary = "유저 정보 업데이트", description = "입력한 데이터로 로그인을 시도합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK!"),
+            @ApiResponse(code = 400, message = "BAD REQUEST!"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
+    })
+    @PutMapping()
+    public ResponseEntity<UserResponseDto> update(
+            @RequestBody UserUpdateRequestDto updateRequestDto,
+            @Parameter(name = "Id", in = ParameterIn.COOKIE) String id) {
+        UserResponseDto userResponseDto;
+
+        try {
+            userResponseDto = userService.update(id, updateRequestDto);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(userResponseDto);
     }
 }

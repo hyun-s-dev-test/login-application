@@ -1,5 +1,6 @@
 package com.dev.woo.toyproject.login.loginserver.domain.user;
 
+import com.dev.woo.toyproject.login.loginserver.controller.dto.UserUpdateRequestDto;
 import com.dev.woo.toyproject.login.loginserver.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,5 +61,15 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void update(UserUpdateRequestDto updateInfo) {
+        this.name = updateInfo.getName();
+        this.password = updateInfo.getPassword();
+        this.gender = updateInfo.getGender();
+        this.socialType = updateInfo.getSocialType();
+        this.token = updateInfo.getToken();
+        this.birth = updateInfo.getBirth();
+        this.phone = updateInfo.getPhone();
     }
 }

@@ -1,15 +1,13 @@
 package com.dev.woo.toyproject.login.loginserver.service.impl;
 
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginRequestDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginResponseDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserResponseDto;
-import com.dev.woo.toyproject.login.loginserver.controller.dto.UserSaveRequestDto;
+import com.dev.woo.toyproject.login.loginserver.controller.dto.*;
 import com.dev.woo.toyproject.login.loginserver.domain.user.SessionUser;
 import com.dev.woo.toyproject.login.loginserver.domain.user.User;
 import com.dev.woo.toyproject.login.loginserver.domain.user.UserRepository;
 import com.dev.woo.toyproject.login.loginserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -44,5 +42,17 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(requestDto.getId());
         httpSession.setAttribute("user", new SessionUser(user));
         return new UserLoginResponseDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDto update(String id, UserUpdateRequestDto updateRequestDto) {
+        User user = userRepository.findById(id);
+
+        if (user == null) throw new IllegalArgumentException(("해당하는 유저가 없습니다. 쿠키에 저장된 값에 문제가 있으니 다시 시도해주세요."));
+
+        user.update(updateRequestDto);
+
+        return new UserResponseDto(user);
     }
 }
