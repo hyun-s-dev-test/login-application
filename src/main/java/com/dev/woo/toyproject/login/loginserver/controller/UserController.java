@@ -1,5 +1,7 @@
 package com.dev.woo.toyproject.login.loginserver.controller;
 
+import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginRequestDto;
+import com.dev.woo.toyproject.login.loginserver.controller.dto.UserLoginResponseDto;
 import com.dev.woo.toyproject.login.loginserver.controller.dto.UserResponseDto;
 import com.dev.woo.toyproject.login.loginserver.controller.dto.UserSaveRequestDto;
 import com.dev.woo.toyproject.login.loginserver.service.UserService;
@@ -9,10 +11,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import net.bytebuddy.asm.Advice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api(value = "User Controller", tags = "User")
@@ -46,5 +50,31 @@ public class UserController {
 
         if (savedUserPk == -1) return ResponseEntity.badRequest().build();
         else return ResponseEntity.ok(savedUserPk);
+    }
+
+    @Operation(summary = "유저 로그인", description = "입력한 데이터로 로그인을 시도합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK!"),
+            @ApiResponse(code = 400, message = "BAD REQUEST!"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR!"),
+    })
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto requestDto, HttpServletResponse response) {
+        UserLoginResponseDto userInfo;
+
+        try {
+            userInfo = userService.login(requestDto);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        System.out.println("login : id : " + userInfo.getId());
+
+        Cookie cookie  = new Cookie("Id", String.valueOf(userInfo.getId()));
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(userInfo);
     }
 }

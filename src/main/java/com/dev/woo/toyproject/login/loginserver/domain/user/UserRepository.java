@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    public User findByPk(Long pk);
+    User findByPk(Long pk);
 
     @Query("SELECT u FROM User u WHERE u.id= :id")
-    public User findById(@Param("id") String id);
+    User findById(@Param("id") String id);
 
     boolean existsById(String id);
+
+    boolean existsByIdAndPassword(String id, String password);
 }
